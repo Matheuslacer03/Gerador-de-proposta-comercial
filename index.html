@@ -427,6 +427,37 @@
     </div>
 
     <div class="panel">
+      <div class="step-num">Passo 1.1 · Briefing Estratégico</div>
+      <h2>Briefing Estratégico</h2>
+      <p class="hint">Preencha as informações estratégicas e de contexto sobre a marca e o projeto do cliente.</p>
+
+      <div class="grid">
+        <div class="field"><label>Ramo de Atuação</label><input type="text" id="f_b_ramo" placeholder="Ex: Alimentício, Tecnologia, etc."></div>
+        <div class="field"><label>Tom de Voz / Personalidade da Marca</label><input type="text" id="f_b_tom" placeholder="Ex: Jovem, corporativo, institucional, etc."></div>
+      </div>
+
+      <div class="field">
+        <label>Público-Alvo</label>
+        <textarea id="f_b_publico" placeholder="Ex: Quem é o cliente ideal, faixa etária, comportamento, etc."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Concorrentes Principais</label>
+        <textarea id="f_b_concorrentes" placeholder="Ex: Concorrentes diretos e indiretos..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Desafio / Problema atual</label>
+        <textarea id="f_b_desafio" placeholder="Ex: Por que o cliente te procurou? Qual dor ou oportunidade o projeto atende?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Referências Visuais</label>
+        <textarea id="f_b_referencias" placeholder="Ex: Links de inspiração, Behance, Pinterest, Pinterest..."></textarea>
+      </div>
+    </div>
+
+    <div class="panel">
       <div class="step-num">Passo 2 · Objetivo</div>
       <h2>Objetivo da proposta</h2>
       <p class="hint">Um parágrafo curto que abre a proposta e explica o que o projeto entrega para o cliente.</p>
@@ -707,6 +738,7 @@ function unpackProposal(p){
     if(p.p.conds==='@d') p.p.conds=defaultConds();
     if(p.p.steps==='@d') p.p.steps=defaultSteps();
     ['scope','environments','deadlines','incluso','payPlans','conds','steps'].forEach(function(k){ if(!Array.isArray(p.p[k])) p.p[k]=[]; });
+    ['b_ramo', 'b_publico', 'b_concorrentes', 'b_desafio', 'b_referencias', 'b_tom'].forEach(function(k){ if(!p.p[k]) p.p[k]=''; });
   }
   return p;
 }
@@ -773,6 +805,12 @@ function blankProposal(){
   return {
     projectType:'grafico',
     objetivo:'',
+    b_ramo:'',
+    b_publico:'',
+    b_concorrentes:'',
+    b_desafio:'',
+    b_referencias:'',
+    b_tom:'',
     scope:[ {etapa:'Imersão e estratégia', itens:['Reunião de briefing com stakeholders','Análise de concorrência','Moodboard e direcionamento criativo']} ],
     environments:[],
     deadlines:[ {etapa:'Briefing e imersão', dias:3, obs:'Inclui pesquisa e moodboard'} ],
@@ -1011,6 +1049,12 @@ function readSimpleFields(){
   P.prazoObs = byId('f_prazoObs').value;
   P.payMethods = byId('f_payMethods').value;
   P.validity = num(byId('f_validity').value)||15;
+  P.b_ramo = byId('f_b_ramo').value;
+  P.b_publico = byId('f_b_publico').value;
+  P.b_concorrentes = byId('f_b_concorrentes').value;
+  P.b_desafio = byId('f_b_desafio').value;
+  P.b_referencias = byId('f_b_referencias').value;
+  P.b_tom = byId('f_b_tom').value;
 }
 function updateDescPreview(){
   var el=byId('descPreview'); if(!el) return;
@@ -1027,6 +1071,12 @@ function fillSimpleFields(){
   byId('f_prazoObs').value = P.prazoObs||'';
   byId('f_payMethods').value = P.payMethods||'';
   byId('f_validity').value = P.validity||15;
+  byId('f_b_ramo').value = P.b_ramo||'';
+  byId('f_b_publico').value = P.b_publico||'';
+  byId('f_b_concorrentes').value = P.b_concorrentes||'';
+  byId('f_b_desafio').value = P.b_desafio||'';
+  byId('f_b_referencias').value = P.b_referencias||'';
+  byId('f_b_tom').value = P.b_tom||'';
   updateDescPreview();
 }
 
@@ -1253,6 +1303,38 @@ function renderClientPage(prop, meta, opts){
     :
     '<div class="invest-box"><div><div class="k">Valor total</div><div class="v">'+fmtBRL(vf)+'</div></div>'+(prop.valorCond?'<div class="cond">'+esc(prop.valorCond)+'</div>':'')+'</div>';
 
+  var hasBriefing = (prop.b_ramo && prop.b_ramo.trim()) ||
+                    (prop.b_publico && prop.b_publico.trim()) ||
+                    (prop.b_concorrentes && prop.b_concorrentes.trim()) ||
+                    (prop.b_desafio && prop.b_desafio.trim()) ||
+                    (prop.b_referencias && prop.b_referencias.trim()) ||
+                    (prop.b_tom && prop.b_tom.trim());
+
+  var briefingHtml = '';
+  if (hasBriefing) {
+    var briefItems = [];
+    if (prop.b_ramo && prop.b_ramo.trim()) {
+      briefItems.push('<div class="brief-item" style="margin-bottom:14px;"><strong>Ramo de Atuação:</strong> <span>'+esc(prop.b_ramo)+'</span></div>');
+    }
+    if (prop.b_tom && prop.b_tom.trim()) {
+      briefItems.push('<div class="brief-item" style="margin-bottom:14px;"><strong>Tom de Voz / Personalidade:</strong> <span>'+esc(prop.b_tom)+'</span></div>');
+    }
+    if (prop.b_publico && prop.b_publico.trim()) {
+      briefItems.push('<div class="brief-item" style="margin-bottom:14px;"><strong>Público-Alvo:</strong><p style="margin:4px 0 0 0; font-size:13.5px; line-height:1.5; color:#4a4a4a;">'+nl2br(prop.b_publico)+'</p></div>');
+    }
+    if (prop.b_concorrentes && prop.b_concorrentes.trim()) {
+      briefItems.push('<div class="brief-item" style="margin-bottom:14px;"><strong>Concorrentes Principais:</strong><p style="margin:4px 0 0 0; font-size:13.5px; line-height:1.5; color:#4a4a4a;">'+nl2br(prop.b_concorrentes)+'</p></div>');
+    }
+    if (prop.b_desafio && prop.b_desafio.trim()) {
+      briefItems.push('<div class="brief-item" style="margin-bottom:14px;"><strong>Desafio / Problema Atual:</strong><p style="margin:4px 0 0 0; font-size:13.5px; line-height:1.5; color:#4a4a4a;">'+nl2br(prop.b_desafio)+'</p></div>');
+    }
+    if (prop.b_referencias && prop.b_referencias.trim()) {
+      briefItems.push('<div class="brief-item" style="margin-bottom:14px;"><strong>Referências Visuais / Inspirações:</strong><p style="margin:4px 0 0 0; font-size:13.5px; line-height:1.5; color:#4a4a4a;">'+nl2br(prop.b_referencias)+'</p></div>');
+    }
+
+    briefingHtml = '<div class="cli-section"><div class="lbl">Briefing</div><h2>Entendimento do Projeto</h2><div class="briefing-box" style="background:#fcfcfc; border:1px solid var(--line); border-radius:10px; padding:20px 24px; margin-top:14px; font-size:14px;">'+briefItems.join('')+'</div></div>';
+  }
+
   var logoHtml = (meta.logoUrl && meta.logoUrl.trim()) ?
     '<div class="brand-logo" style="margin-bottom: 20px;"><img src="'+esc(meta.logoUrl.trim())+'" alt="Logo" style="max-height: 80px; max-width: 100%; object-fit: contain;"></div>' : '';
 
@@ -1271,6 +1353,7 @@ function renderClientPage(prop, meta, opts){
     '</div>'+
     '<div class="cli-body">'+
       (prop.objetivo? '<div class="cli-section"><div class="lbl">Objetivo</div><h2>Sobre este projeto</h2><p>'+nl2br(prop.objetivo)+'</p></div>':'')+
+      briefingHtml+
       (scopeHtml? '<div class="cli-section"><div class="lbl">Escopo</div><h2>O que será desenvolvido</h2>'+scopeHtml+'</div>':'')+
       envHtml+
       (dlRows? '<div class="cli-section"><div class="lbl">Prazos</div><h2>Cronograma por etapa</h2><table class="deadlines"><thead><tr><th>Etapa</th><th>Prazo</th><th>Observações</th></tr></thead><tbody>'+dlRows+'</tbody></table>'+(prop.prazoObs?'<p style="margin-top:14px;font-size:13px;color:#666;">'+nl2br(prop.prazoObs)+'</p>':'')+'</div>':'')+
