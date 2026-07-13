@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Gerador de Proposta Comercial</title>
+<title>Ren OS — Workspace de Gestão de Design</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,18 +34,308 @@
   button{font-family:'Inter', sans-serif;}
 
   /* ============ SHELL DO DESIGNER ============ */
-  .admin{max-width:980px; margin:0 auto; padding:32px 16px 100px;}
-  .app-title{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:4px;}
-  .app-sub{font-size:26px; margin-bottom:20px;}
-
-  .tabs{display:flex; gap:0; border-bottom:1px solid var(--line); margin-bottom:24px; flex-wrap:wrap;}
-  .tab-btn{
-    background:none; border:none; cursor:pointer; padding:10px 4px; margin-right:26px;
-    font-size:14.5px; font-weight:500; color:#808080; border-bottom:2px solid transparent;
+  .admin{display: flex; min-height: 100vh;}
+  .sidebar {
+    width: 240px;
+    background: var(--ink);
+    color: #fff;
+    padding: 32px 20px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 50;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   }
-  .tab-btn.active{color:var(--ink); border-bottom-color:var(--lime);}
-  .tab-btn .count{font-family:'Space Grotesk', sans-serif; font-size:11px; color:var(--muted); margin-left:4px;}
-  .tab-btn.active .count{color:var(--lime-dark);}
+  .sidebar .brand {
+    margin-bottom: 12px;
+  }
+  .sidebar .brand .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--lime);
+  }
+  .sidebar .brand .subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 4px;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sidebar-btn {
+    background: none;
+    border: none;
+    color: #c9c9c9;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14.5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .sidebar-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+  }
+  .sidebar-btn.active {
+    background: var(--lime);
+    color: var(--lime-dark);
+    font-weight: 600;
+  }
+  .sidebar-btn .count {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    background: var(--lime-dark);
+    color: var(--lime);
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+  .sidebar-btn.active .count {
+    background: var(--lime-dark);
+    color: var(--lime);
+  }
+  .main-content {
+    flex: 1;
+    margin-left: 240px;
+    padding: 32px 40px 100px;
+    background: var(--bg);
+    min-height: 100vh;
+    max-width: calc(100vw - 240px);
+  }
+  @media (max-width: 768px) {
+    .admin {
+      flex-direction: column;
+    }
+    .sidebar {
+      position: relative;
+      width: 100%;
+      padding: 20px;
+      height: auto;
+      bottom: auto;
+      box-shadow: none;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 16px 16px 100px;
+      max-width: 100%;
+    }
+  }
+
+  /* Kanban / CRM styling */
+  .kanban-board {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 16px;
+  }
+  .kanban-column {
+    flex: 1;
+    min-width: 280px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .kanban-column-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .kanban-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .kanban-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+  .kanban-card-client {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .kanban-card-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--lime-dark);
+  }
+  .kanban-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .kanban-card-actions .rowlink {
+    font-size: 12px;
+    margin-right: 0;
+  }
+
+  /* Dashboard Dashboard */
+  .dash-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .dash-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .dash-card .k {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .dash-card .v {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .dash-alerts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .dash-alert-item {
+    background: #fdf0d5;
+    border: 1px solid #f0dfb0;
+    color: #7a5500;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dash-alert-item .btn-alert {
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11.5px;
+    cursor: pointer;
+  }
+
+  /* Projects checklist */
+  .project-item {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  .project-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .project-header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .project-header-client {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .project-progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .project-progress-bar-bg {
+    width: 120px;
+    height: 8px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .project-progress-bar {
+    height: 100%;
+    background: var(--lime-dark);
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .project-progress-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--lime-dark);
+  }
+  .project-expand-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+  .project-tasks {
+    margin-top: 16px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .project-task-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+  }
+  .project-task-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--lime-dark);
+  }
+  .project-task-checkbox:checked + span {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
 
   .panel{background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px 26px; margin-bottom:18px;}
   .panel > h2{font-size:16px; margin-bottom:2px;}
@@ -371,18 +661,53 @@
 
 <!-- ============ APP DO DESIGNER ============ -->
 <div class="admin" id="adminApp">
-  <div class="app-title">Ferramenta interna · uso do designer</div>
-  <div class="app-sub">Gerador de proposta comercial <span style="font-size:11px;color:var(--muted);font-family:'Space Grotesk',sans-serif;vertical-align:middle;">v2.8</span></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="title">Ren OS</div>
+      <div class="subtitle">Workspace de Design</div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-btn active" data-tab="dashboard" type="button">Dashboard</button>
+      <button class="sidebar-btn" data-tab="proposta" type="button">Nova Proposta</button>
+      <button class="sidebar-btn" data-tab="orcamento" type="button">Orçamento</button>
+      <button class="sidebar-btn" data-tab="clientes" type="button">CRM <span class="count" id="clientCount"></span></button>
+      <button class="sidebar-btn" data-tab="projetos" type="button">Projetos</button>
+      <button class="sidebar-btn" data-tab="financeiro" type="button">Financeiro</button>
+    </nav>
+  </aside>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="proposta" type="button">Nova proposta</button>
-    <button class="tab-btn" data-tab="orcamento" type="button">Orçamento</button>
-    <button class="tab-btn" data-tab="clientes" type="button">Clientes <span class="count" id="clientCount"></span></button>
-    <button class="tab-btn" data-tab="financeiro" type="button">Financeiro</button>
+  <main class="main-content">
+
+  <!-- ---- ABA: DASHBOARD ---- -->
+  <div id="viewDashboard" style="display:none;">
+    <h2 style="font-size: 26px; margin-bottom: 20px;">Workspace Dashboard</h2>
+
+    <div class="dash-cards">
+      <div class="dash-card">
+        <div class="k">Faturamento Previsto do Mês</div>
+        <div class="v" id="dashExpectedBilling">R$ 0,00</div>
+      </div>
+      <div class="dash-card">
+        <div class="k">Propostas Enviadas</div>
+        <div class="v" id="dashProposalsSent">0</div>
+      </div>
+      <div class="dash-card">
+        <div class="k">Propostas Aceitas</div>
+        <div class="v" id="dashProposalsAccepted">0</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Alertas Importantes</h2>
+      <p class="hint" style="margin-bottom: 12px;">Propostas que expiram em breve ou já expiraram.</p>
+      <div class="dash-alerts" id="dashAlertsList">
+        <div class="empty" style="padding: 10px 0;">Sem alertas no momento.</div>
+      </div>
+    </div>
   </div>
 
   <!-- ---- ABA: NOVA PROPOSTA ---- -->
-  <div id="viewProposta">
+  <div id="viewProposta" style="display:none;">
     <div class="panel">
       <div class="step-num">Passo 1 · Identificação</div>
       <h2>Você e o cliente</h2>
@@ -649,10 +974,20 @@
     <div id="clientsContent"><div class="empty">Carregando…</div></div>
   </div>
 
+  <!-- ---- ABA: PROJETOS ---- -->
+  <div id="viewProjetos" style="display:none;">
+    <h2 style="font-size: 26px; margin-bottom: 20px;">Gestão de Projetos (Pós-venda)</h2>
+    <p class="storage-hint">Aqui estão listados os projetos cujas propostas foram aceitas pelo cliente. Monitore o progresso e conclua as tarefas.</p>
+    <div id="projectsContent">
+      <div class="empty">Nenhum projeto aceito ainda.</div>
+    </div>
+  </div>
+
   <!-- ---- ABA: FINANCEIRO ---- -->
   <div id="viewFinanceiro" style="display:none;">
     <div id="finContent"><div class="empty">Carregando…</div></div>
   </div>
+  </main>
 </div>
 
 <!-- ============ PÁGINA DO CLIENTE (render dinâmico) ============ -->
@@ -1214,8 +1549,8 @@ function backToAdmin(tab){
   byId('clientApp').style.display='none';
   byId('clientApp').innerHTML='';
   byId('adminApp').style.display='';
-  document.title='Gerador de Proposta Comercial';
-  showTab(tab||'proposta');
+  document.title='Ren OS — Workspace de Gestão de Design';
+  showTab(tab||'dashboard');
   window.scrollTo(0,0);
 }
 function renderClientPage(prop, meta, opts){
@@ -1708,6 +2043,49 @@ function propStatus(r){
   var warn=new Date(exp); warn.setDate(warn.getDate()-3);
   return (new Date()>=warn)?'expirando':'enviada';
 }
+function renderDashboard() {
+  var currentMonthKey = curMonth();
+  var expectedBilling = 0;
+  (FIN.profiles || []).forEach(function(prof){
+    (prof.entries || []).forEach(function(e){
+      if (entryMonth(e) === currentMonthKey && e.tipo === 'receita') {
+        expectedBilling += num(e.valor);
+      }
+    });
+  });
+
+  var sentCount = records.length;
+  var acceptedCount = records.filter(function(r) { return r.status === 'aceita'; }).length;
+
+  var expBillingEl = byId('dashExpectedBilling');
+  if (expBillingEl) expBillingEl.textContent = fmtBRL(expectedBilling);
+
+  var sentEl = byId('dashProposalsSent');
+  if (sentEl) sentEl.textContent = sentCount;
+
+  var acceptedEl = byId('dashProposalsAccepted');
+  if (acceptedEl) acceptedEl.textContent = acceptedCount;
+
+  var alertsListEl = byId('dashAlertsList');
+  if (alertsListEl) {
+    var expiring = records.filter(function(r) { return propStatus(r) === 'expirando'; });
+    if (expiring.length === 0) {
+      alertsListEl.innerHTML = '<div class="empty" style="padding: 10px 0;">Sem propostas expirando no momento.</div>';
+    } else {
+      alertsListEl.innerHTML = expiring.map(function(r) {
+        var validade = (r.prop && num(r.prop.validity)) || 15;
+        var exp = new Date(r.createdAt); exp.setDate(exp.getDate() + validade);
+        var restao = Math.ceil((exp - new Date()) / (1000 * 60 * 60 * 24));
+        return '<div class="dash-alert-item">' +
+          '<span>A proposta para <strong>' + esc(r.client) + '</strong> (' + esc(r.project) + ') expira em ' + restao + ' dia(s) (' + exp.toLocaleDateString('pt-BR') + ')</span>' +
+          '<button class="btn-alert" type="button" data-alert-goto="clientes">Ver no CRM</button>' +
+        '</div>';
+      }).join('');
+    }
+  }
+}
+window.renderDashboard = renderDashboard;
+
 var clientFilter='';
 function renderClientsView(){
   byId('clientCount').textContent = records.length? '('+records.length+')':'';
@@ -1717,30 +2095,67 @@ function renderClientsView(){
   var total=records.reduce(function(a,r){return a+(r.valor||0);},0);
   var f=clientFilter.toLowerCase();
   var visible=f? records.filter(function(r){ return (r.client||'').toLowerCase().indexOf(f)!==-1 || (r.project||'').toLowerCase().indexOf(f)!==-1; }) : records;
-  var rows=visible.map(function(r){
-    var url=displayLink(r);
-    var canShort= location.protocol!=='file:' && !r.shortLink && !r.remoteId;
-    var st=propStatus(r);
-    var stLabel={aceita:'aceita', enviada:'enviada', expirando:'expira em breve', expirada:'expirada'}[st];
-    var stClass={aceita:'aceita', enviada:'enviada', expirando:'expirando', expirada:'expirada'}[st];
-    return '<tr>'+
-      '<td>'+esc(r.client)+'</td>'+
-      '<td>'+esc(r.project)+'</td>'+
-      '<td>'+new Date(r.createdAt).toLocaleDateString('pt-BR')+'</td>'+
-      '<td class="num">'+fmtBRL(r.valor)+'</td>'+
-      '<td><span class="badge '+stClass+'">'+stLabel+'</span></td>'+
-      '<td id="act-'+r.id+'">'+
-        '<button class="rowlink" data-open="'+r.id+'">ver</button>'+
-        '<a class="rowlink" href="'+esc(url)+'" target="_blank" rel="noopener">abrir</a>'+
-        '<button class="rowlink" data-copy="'+r.id+'">copiar</button>'+
-        '<button class="rowlink" data-dup="'+r.id+'">duplicar</button>'+
-        (canShort?'<button class="rowlink" data-short="'+r.id+'">encurtar</button>':'')+
-        '<button class="rowlink" data-contract="'+r.id+'">contrato</button>'+
-        '<button class="rowlink danger" data-del="'+r.id+'">excluir</button>'+
-      '</td>'+
-    '</tr>';
-  }).join('');
-  if(!rows) rows='<tr><td colspan="6" class="empty">Nada encontrado para "'+esc(clientFilter)+'".</td></tr>';
+
+  var colEnviada = [];
+  var colExpirandoExpirada = [];
+  var colAceita = [];
+
+  visible.forEach(function(r) {
+    var st = propStatus(r);
+    if (st === 'aceita') {
+      colAceita.push(r);
+    } else if (st === 'expirando' || st === 'expirada') {
+      colExpirandoExpirada.push(r);
+    } else {
+      colEnviada.push(r);
+    }
+  });
+
+  function renderKanbanCard(r) {
+    var url = displayLink(r);
+    var canShort = location.protocol !== 'file:' && !r.shortLink && !r.remoteId;
+    var st = propStatus(r);
+    var stLabel = {aceita:'aceita', enviada:'enviada', expirando:'expira em breve', expirada:'expirada'}[st];
+    var stClass = {aceita:'aceita', enviada:'enviada', expirando:'expirando', expirada:'expirada'}[st];
+
+    return '<div class="kanban-card" id="card-' + r.id + '">' +
+      '<div class="kanban-card-title">' + esc(r.project) + '</div>' +
+      '<div class="kanban-card-client">Cliente: <strong>' + esc(r.client) + '</strong></div>' +
+      '<div style="font-size: 11.5px; color: var(--muted);">' + new Date(r.createdAt).toLocaleDateString('pt-BR') + '</div>' +
+      '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">' +
+        '<span class="badge ' + stClass + '">' + stLabel + '</span>' +
+        '<span class="kanban-card-value">' + fmtBRL(r.valor) + '</span>' +
+      '</div>' +
+      '<div class="kanban-card-actions">' +
+        '<button class="rowlink" type="button" data-open="' + r.id + '">ver</button>' +
+        '<a class="rowlink" href="' + esc(url) + '" target="_blank" rel="noopener">abrir</a>' +
+        '<button class="rowlink" type="button" data-copy="' + r.id + '">copiar</button>' +
+        '<button class="rowlink" type="button" data-dup="' + r.id + '">duplicar</button>' +
+        (canShort ? '<button class="rowlink" type="button" data-short="' + r.id + '">encurtar</button>' : '') +
+        '<button class="rowlink" type="button" data-contract="' + r.id + '">contrato</button>' +
+        '<button class="rowlink danger" type="button" data-del="' + r.id + '">excluir</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var kanbanHtml = '<div class="kanban-board">' +
+    '<div class="kanban-column">' +
+      '<div class="kanban-column-title"><span>Enviada</span> <span style="font-size: 11px; background: #ddd; color: #555; padding: 2px 6px; border-radius: 10px;">' + colEnviada.length + '</span></div>' +
+      colEnviada.map(renderKanbanCard).join('') +
+      (colEnviada.length === 0 ? '<div class="empty" style="font-size: 12px; padding: 20px 0;">Nenhum card</div>' : '') +
+    '</div>' +
+    '<div class="kanban-column">' +
+      '<div class="kanban-column-title"><span>Expirando / Expirada</span> <span style="font-size: 11px; background: #ddd; color: #555; padding: 2px 6px; border-radius: 10px;">' + colExpirandoExpirada.length + '</span></div>' +
+      colExpirandoExpirada.map(renderKanbanCard).join('') +
+      (colExpirandoExpirada.length === 0 ? '<div class="empty" style="font-size: 12px; padding: 20px 0;">Nenhum card</div>' : '') +
+    '</div>' +
+    '<div class="kanban-column">' +
+      '<div class="kanban-column-title"><span>Aceita</span> <span style="font-size: 11px; background: #ddd; color: #555; padding: 2px 6px; border-radius: 10px;">' + colAceita.length + '</span></div>' +
+      colAceita.map(renderKanbanCard).join('') +
+      (colAceita.length === 0 ? '<div class="empty" style="font-size: 12px; padding: 20px 0;">Nenhum card</div>' : '') +
+    '</div>' +
+  '</div>';
+
   box.innerHTML=
     '<div class="clients-summary">'+
       '<div class="card"><div class="k">Propostas</div><div class="v">'+records.length+'</div></div>'+
@@ -1748,10 +2163,100 @@ function renderClientsView(){
       '<div class="card"><div class="k">Valor total</div><div class="v">'+fmtBRL(total)+'</div></div>'+
     '</div>'+
     '<div class="field" style="max-width:340px;"><input type="text" id="clientSearch" placeholder="Buscar por cliente ou projeto…" value="'+esc(clientFilter)+'"></div>'+
-    '<table class="clients"><thead><tr><th>Cliente</th><th>Projeto</th><th>Data</th><th class="num">Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody>'+rows+'</tbody></table>';
+    kanbanHtml;
+
   var si=byId('clientSearch');
   if(si && clientFilter){ si.focus(); si.setSelectionRange(si.value.length, si.value.length); }
 }
+
+var projectTasksCache = {};
+var expandedProjects = {};
+
+sGet('ren-os-project-tasks').then(function(r) {
+  if (r && r.value) {
+    try { projectTasksCache = JSON.parse(r.value); } catch(e) {}
+  }
+});
+
+function saveProjectTasks() {
+  sSet('ren-os-project-tasks', JSON.stringify(projectTasksCache)).catch(function(){});
+}
+
+function renderProjetos() {
+  var box = byId('projectsContent');
+  if (!box) return;
+
+  var accepted = records.filter(function(r) { return r.status === 'aceita'; });
+  if (accepted.length === 0) {
+    box.innerHTML = '<div class="empty">Nenhum projeto aceito ainda. Quando o cliente aceitar a proposta ou você registrá-la como aceita no CRM, ela aparecerá aqui para controle pós-venda.</div>';
+    return;
+  }
+
+  box.innerHTML = accepted.map(function(r) {
+    var tasks = [];
+    if (r.prop && r.prop.projectType === 'ambientes') {
+      (r.prop.environments || []).forEach(function(env, idx) {
+        if (env.nome && env.nome.trim()) {
+          tasks.push({
+            id: 'env-' + idx,
+            text: env.nome.trim() + (env.descricao ? ' · ' + env.descricao.trim() : '')
+          });
+        }
+      });
+    } else if (r.prop && r.prop.scope) {
+      (r.prop.scope || []).forEach(function(stage, sIdx) {
+        var stageTitle = stage.etapa ? stage.etapa.trim() : 'Etapa';
+        (stage.itens || []).forEach(function(item, iIdx) {
+          if (item && item.trim()) {
+            tasks.push({
+              id: 'scope-' + sIdx + '-' + iIdx,
+              text: '[' + stageTitle + '] ' + item.trim()
+            });
+          }
+        });
+      });
+    }
+
+    var completed = projectTasksCache[r.id] || [];
+    var completedCount = tasks.filter(function(t) { return completed.indexOf(t.id) !== -1; }).length;
+    var totalCount = tasks.length;
+    var percent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+    var isExpanded = expandedProjects[r.id];
+    var tasksHtml = '';
+    if (isExpanded) {
+      tasksHtml = '<div class="project-tasks">' +
+        tasks.map(function(t) {
+          var isChecked = completed.indexOf(t.id) !== -1;
+          return '<label class="project-task-row">' +
+            '<input type="checkbox" class="project-task-checkbox" data-project-id="' + r.id + '" data-task-id="' + t.id + '"' + (isChecked ? ' checked' : '') + ' style="width: auto; margin-right: 8px;">' +
+            '<span>' + esc(t.text) + '</span>' +
+          '</label>';
+        }).join('') +
+        (tasks.length === 0 ? '<div class="empty" style="padding: 10px 0;">Nenhuma tarefa configurada no escopo desta proposta.</div>' : '') +
+      '</div>';
+    }
+
+    return '<div class="project-item" id="project-' + r.id + '">' +
+      '<div class="project-header" data-project-toggle="' + r.id + '">' +
+        '<div class="project-header-left">' +
+          '<div class="project-header-title">' + esc(r.project) + '</div>' +
+          '<div class="project-header-client">Cliente: <strong>' + esc(r.client) + '</strong></div>' +
+        '</div>' +
+        '<div class="project-progress-container">' +
+          '<div class="project-progress-bar-bg">' +
+            '<div class="project-progress-bar" style="width: ' + percent + '%;"></div>' +
+          '</div>' +
+          '<span class="project-progress-text">' + percent + '% (' + completedCount + '/' + totalCount + ')</span>' +
+          '<button class="project-expand-btn" type="button">' + (isExpanded ? '▲' : '▼') + '</button>' +
+        '</div>' +
+      '</div>' +
+      tasksHtml +
+    '</div>';
+  }).join('');
+}
+window.renderProjetos = renderProjetos;
+
 function registerReceiptCode(code){
   code=(code||'').trim();
   if(code.indexOf('ACEITE:')!==0){ toast('Código inválido. Ele começa com "ACEITE:".'); return; }
@@ -2347,11 +2852,17 @@ function pullFromBudget(silent){
    NAVEGAÇÃO ENTRE ABAS
    ============================================================ */
 function showTab(tab){
-  ['proposta','orcamento','clientes','financeiro'].forEach(function(t){
-    byId('view'+t.charAt(0).toUpperCase()+t.slice(1)).style.display = (t===tab?'':'none');
+  ['dashboard','proposta','orcamento','clientes','projetos','financeiro'].forEach(function(t){
+    var el = byId('view'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el) el.style.display = (t===tab?'':'none');
   });
-  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab')===tab); });
-  if(tab==='clientes') autoRefreshAccepts();
+  document.querySelectorAll('.sidebar-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab')===tab); });
+  if(tab==='dashboard') if(window.renderDashboard) window.renderDashboard();
+  if(tab==='clientes') {
+    autoRefreshAccepts();
+    if(window.renderClientsView) window.renderClientsView();
+  }
+  if(tab==='projetos') if(window.renderProjetos) window.renderProjetos();
   if(tab==='financeiro') renderFin();
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -2413,6 +2924,20 @@ document.addEventListener('input', function(e){
 
 document.addEventListener('change', function(e){
   var t=e.target;
+  if (t.classList.contains('project-task-checkbox')) {
+    var pId = t.getAttribute('data-project-id');
+    var tId = t.getAttribute('data-task-id');
+    if (!projectTasksCache[pId]) projectTasksCache[pId] = [];
+    var list = projectTasksCache[pId];
+    if (t.checked) {
+      if (list.indexOf(tId) === -1) list.push(tId);
+    } else {
+      projectTasksCache[pId] = list.filter(function(x) { return x !== tId; });
+    }
+    saveProjectTasks();
+    renderProjetos();
+    return;
+  }
   if(t.hasAttribute('data-act-responsavel')){ activities[+t.getAttribute('data-act-responsavel')].responsavel=t.value; computeAll(); }
   else if(t.id==='prazoTipo'||t.id==='descontoTipo'){ updateSettings(); }
   else if(t.id==='importBackupFile'){ handleImportBackup(e); }
@@ -2420,9 +2945,18 @@ document.addEventListener('change', function(e){
 });
 
 document.addEventListener('click', function(e){
-  var t=e.target.closest('[data-tab],[data-ptype],button,[data-open],[data-copy],[data-del],[data-contract],[data-short],[data-fin-open]');
+  var t=e.target.closest('[data-tab],[data-ptype],button,[data-open],[data-copy],[data-del],[data-contract],[data-short],[data-fin-open],[data-alert-goto],[data-project-toggle]');
   if(!t) return;
   var a;
+  /* project expansion toggle */
+  if (t.hasAttribute('data-project-toggle')) {
+    var pId = t.getAttribute('data-project-toggle');
+    expandedProjects[pId] = !expandedProjects[pId];
+    renderProjetos();
+    return;
+  }
+  /* alert click redirects */
+  if(t.hasAttribute('data-alert-goto')){ showTab(t.getAttribute('data-alert-goto')); return; }
   /* abas */
   if((a=t.getAttribute('data-tab'))){ showTab(a); return; }
   /* tipo de projeto */
@@ -2629,6 +3163,7 @@ function bootAdmin(){
     var draftRaw=results[results.length-1];
     if(draftRaw && restoreDraft(draftRaw)){ draftLast=draftRaw; toast('Rascunho anterior restaurado — continue de onde parou.'); }
     startDraftAutosave();
+    showTab('dashboard');
   });
 }
 function boot(){
